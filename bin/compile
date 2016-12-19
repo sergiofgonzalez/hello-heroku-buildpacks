@@ -23,33 +23,40 @@ else
   cat $1/hello.txt
 fi | indent
 
-set -o errexit
-set -o pipefail
-set -o nounset
+### Configure environment
+
+set -o errexit    # always exit on error
+set -o pipefail   # don't ignore exit codes when piping output
+set -o nounset    # fail on unset variables
+unset GIT_DIR     # Avoid GIT_DIR leak from previous build steps
+
+### Constants
 
 DEFAULT_CACHE="node_modules"
 
-BUILD_DIR=$1
-CACHE_DIR=$2
-ENV_DIR=$3
+### Configure directories
+
+BUILD_DIR=${1:-}
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 
-printf "BUILD_DIR=%s\n" $BUILD_DIR
-printf "CACHE_DIR=%s\n" $CACHE_DIR
-printf "ENV_DIR=%s\n" $ENV_DIR
-printf "BP_DIR=%s\n" $BP_DIR
-
-
-mkdir -p "$BUILD_DIR/.heroku/node"
+mkdir -p "$BUILD_DIR/.heroku/node/"
 cd $BUILD_DIR
 export PATH="$BUILD_DIR/.heroku/node/bin":$PATH
 
-LOG_FILE='tmp/node-build-log.txt'
+LOG_FILE='/tmp/node-build-log.txt'
 echo "" > "$LOG_FILE"
 
-echo "output.sh"
-cat $BP_DIR/lib/output.sh
-echo "================================="
+### Load dependencies
+
+source $BP_DIR/lib/output.sh
+source $BP_DIR/lib/json.sh
+source $BP_DIR/lib/failure.sh
+source $BP_DIR/lib/environment.sh
+source $BP_DIR/lib/binaries.sh
+source $BP_DIR/lib/cache.sh
+source $BP_DIR/lib/dependencies.sh
 
 source $BP_DIR/lib/output.sh
 source $BP_DIR/lib/json.sh
