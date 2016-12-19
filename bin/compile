@@ -22,3 +22,27 @@ else
   echo "hello.txt is not empty, here are the contents" | indent
   cat $1/hello.txt
 fi | indent
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEFAULT_CACHE="node_modules"
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+
+printf "BUILD_DIR=%s" $BUILD_DIR
+printf "CACHE_DIR=%s" $CACHE_DIR
+printf "ENV_DIR=%s" $ENV_DIR
+printf "BP_DIR=%s" $BP_DIR
+
+
+mkdir -p "$BUILD_DIR/.heroku/node"
+cd $BUILD_DIR
+export PATH="$BUILD_DIR/.heroku/node/bin":$PATH
+
+LOG_FILE='tmp/node-build-log.txt'
+echo "" > "$LOG_FILE"
