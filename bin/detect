@@ -5,8 +5,8 @@
 ## return an exit code of 0 if the app in BUILD_DIR can be serviced by this
 ## buildpack
 
-#  this pack is for Node.js apps that run in a managed context
-if [ -f $1/hello.txt ]; then
+#  this pack is for Node.js apps that run in a controlled context
+if [ -f $1/package.json ]; then
   echo "Node.js managed application"
   exit 0
 fi

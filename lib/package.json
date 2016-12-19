@@ -1,0 +1,36 @@
+{
+  "name": "heroku-managed-batching",
+  "version": "0.0.1",
+  "description": "Running bespoke logic on a managed context and controlled infrastructure",
+  "engines": {
+    "node": "6.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TBD"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sergio F. Gonzalez",
+    "email": "sergio.f.gonzalez@accenture.com"
+  },
+  "license": "ISC",
+  "scripts": {
+    "start": "node build/index.js",
+    "lint": "eslint public/src/",
+    "clean": "rm -rf build/",
+    "copy": "cp -r public/src/ build/",
+    "build": "npm run lint --silent && npm run copy --silent",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run copy",
+    "debug": "node-debug build/index.js",
+    "dev": "nodemon --ext js,json,yml --watch public/src --watch .eslintrc.yml --exec 'npm run build --silent && npm start --silent'"
+  },
+  "devDependencies": {
+    "eslint": "3.12.2"
+  },
+  "dependencies": {
+    "log4js": "1.0.1",
+    "nconf": "0.8.4"
+  }
+}
