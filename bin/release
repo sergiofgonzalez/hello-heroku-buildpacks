@@ -1,0 +1,15 @@
+#!/bin/bash
+
+## Usage: bin/release BUILD_DIR
+
+## This script returns a YAML formatted hash with two keys:
+## + addons
+## + default_process_types
+
+cat << EOF
+---
+addons:
+  - heroku-postgresql
+default_process_types:
+  web: bin/node server.js
+EOF

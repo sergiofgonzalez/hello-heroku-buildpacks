@@ -1,0 +1,24 @@
+#!/bin/bash
+
+## Usage: bin/compile BUILD_DIR CACHE_DIR ENV_DIR
+
+## This script performs the buildpack transformation, with BUILD_DIR being the
+## location of the app and CACHE_DIR the location the buildpack can use to cache
+## build artifacts between builds.
+## ENV_DIR is a directory that contains a file for each of the application's
+## configuration variables. Config vars are made available as environment
+## variables during execution of commands.
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+echo "------> Found a hello.txt"
+
+if [ ! -s $1/hello.txt ]; then
+  echo "hello.txt was empty"
+  exit 1
+else
+  echo "hello.txt is not empty, here are the contents" | indent
+  cat $1/hello.txt
+fi | indent
